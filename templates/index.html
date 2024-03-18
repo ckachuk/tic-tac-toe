@@ -1,0 +1,48 @@
+{{block "index" .}}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+    <script
+      src="https://unpkg.com/htmx.org@1.9.10"
+      integrity="sha384-D1Kt99CQMDuVetoL1lrYwg5t+9QdHe7NLX/SoJYkXDFfX37iInKRy5xLSi8nO7UC"
+      crossorigin="anonymous"
+    ></script>
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>hello world</h1>
+
+    <h2>{{ .Player1Name}}</h2>
+    <h2>{{ .Player2Name}}</h2>
+    {{ template "displayBoard" .}}
+    <button
+      id="reset"
+      hx-target="#board"
+      hx-get="/reset"
+      hx-swap="outerHTML"
+    >
+      Reset game
+    </button>
+  </body>
+</html>
+{{end}}
+
+{{block "displayBoard" .}} 
+  <div id="board">
+    {{range $i, $val := .Board}}
+    <button
+        id="{{ $i }}"
+        hx-swap="outerHTML"
+        hx-post="/choice/{{$i}}"
+        hx-target="#board"
+      >
+        {{.}}
+      </button>
+  {{end}}
+  </div>
+{{end}}
